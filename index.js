@@ -1,6 +1,6 @@
-import chalk from 'chalk';
-import cors from 'cors';
-import express, { json } from 'express';
+import chalk from "chalk";
+import cors from "cors";
+import express, { json } from "express";
 
 const app = express();
 
@@ -10,46 +10,46 @@ app.use(json());
 const usuarios = [];
 const tweets = [];
 
-app.post('/sign-up', (req, res) => {
+app.post("/sign-up", (req, res) => {
   const { username, avatar } = req.body;
 
   if (!username || !avatar) {
-    res.status(400).send('Todos os campos são obrigatórios!');
+    res.status(400).send("Todos os campos são obrigatórios!");
     return;
   }
 
   usuarios.push({ username, avatar });
 
-  res.status(200).send('OK deu tudo certo');
+  res.status(200).send("OK deu tudo certo");
 });
 
-app.post('/tweets', (req, res) => {
+app.post("/tweets", (req, res) => {
   const { tweet, username } = req.body;
 
   if (!username || !tweet) {
-    return res.status(400).send('Todos os campos são obrigatórios!');
+    return res.status(400).send("Todos os campos são obrigatórios!");
   }
 
-  const { avatar } = usuarios.find(user => user.username === username);
+  const { avatar } = usuarios.find((user) => user.username === username);
 
   tweets.push({ username, tweet, avatar });
 
-  res.status(201).send('OK, seu tweet foi criado');
+  res.status(201).send("OK, seu tweet foi criado");
 });
 
-app.get('/tweets/:username', (req, res) => {
+app.get("/tweets/:username", (req, res) => {
   const { username } = req.params;
 
-  const tweetsDoUsuario = tweets.filter(t => t.username === username);
+  const tweetsDoUsuario = tweets.filter((t) => t.username === username);
 
   res.status(200).send(tweetsDoUsuario);
 });
 
-app.get('/tweets', (req, res) => {
+app.get("/tweets", (req, res) => {
   const { page } = req.query;
 
   if (page && page < 1) {
-    res.status(400).send('Informe uma página válida!');
+    res.status(400).send("Informe uma página válida!");
     return;
   }
   const limite = 10;
@@ -68,5 +68,5 @@ function reverseTweets() {
 }
 
 app.listen(5001, () => {
-  console.log(chalk.bold.blue('Servidor funfando de boas!!!'));
+  console.log(chalk.bold.blue("Servidor funfando de boas!!!"));
 });
